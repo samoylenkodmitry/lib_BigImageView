@@ -1,0 +1,10 @@
+libs/
+.settings/
+gen/
+bin/
+.idea/
+.classpath
+.project
+local.properties
+project.properties
+build.gradle

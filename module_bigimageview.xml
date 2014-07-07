@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_bigimageview" default="compile.module.bigimageview">
+    <dirname property="module.bigimageview.basedir" file="${ant.file.module_bigimageview}"/>
+
+    <property name="module.jdk.home.bigimageview" value="${jdk.home.android_4.2.2_platform}"/>
+    <property name="module.jdk.bin.bigimageview" value="${jdk.bin.android_4.2.2_platform}"/>
+    <property name="module.jdk.classpath.bigimageview" value="jdk.classpath.android_4.2.2_platform"/>
+
+    <property name="compiler.args.bigimageview" value="${compiler.args}"/>
+
+    <property name="bigimageview.output.dir"
+              value="${module.bigimageview.basedir}/../restore/intellij/pro/GoodFonAndroidPro/out/artifacts/GoodFonAndroidPro/production/BigImageView"/>
+    <property name="bigimageview.testoutput.dir"
+              value="${module.bigimageview.basedir}/../restore/intellij/pro/GoodFonAndroidPro/out/artifacts/GoodFonAndroidPro/test/BigImageView"/>
+
+    <path id="bigimageview.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="bigimageview.module.production.classpath">
+        <path refid="${module.jdk.classpath.bigimageview}"/>
+    </path>
+
+    <path id="bigimageview.runtime.production.module.classpath">
+        <pathelement location="${bigimageview.output.dir}"/>
+    </path>
+
+    <path id="bigimageview.module.classpath">
+        <path refid="${module.jdk.classpath.bigimageview}"/>
+        <pathelement location="${bigimageview.output.dir}"/>
+    </path>
+
+    <path id="bigimageview.runtime.module.classpath">
+        <pathelement location="${bigimageview.testoutput.dir}"/>
+        <pathelement location="${bigimageview.output.dir}"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.bigimageview">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.bigimageview">
+        <patternset refid="compiler.excluded"/>
+        <patternset refid="excluded.from.module.bigimageview"/>
+    </patternset>
+
+    <path id="bigimageview.module.sourcepath">
+        <dirset dir="${module.bigimageview.basedir}">
+            <include name="src"/>
+            <include name="gen"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.bigimageview"
+            depends="compile.module.bigimageview.production,compile.module.bigimageview.tests"
+            description="Compile module BigImageView"/>
+
+    <target name="compile.module.bigimageview.production" depends="register.custom.compilers"
+            description="Compile module BigImageView; production classes">
+        <mkdir dir="${bigimageview.output.dir}"/>
+        <javac2 destdir="${bigimageview.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+                memorymaximumsize="${compiler.max.memory}" fork="true"
+                executable="${module.jdk.bin.bigimageview}/javac">
+            <compilerarg line="${compiler.args.bigimageview}"/>
+            <bootclasspath refid="bigimageview.module.bootclasspath"/>
+            <classpath refid="bigimageview.module.production.classpath"/>
+            <src refid="bigimageview.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.bigimageview"/>
+        </javac2>
+
+        <copy todir="${bigimageview.output.dir}">
+            <fileset dir="${module.bigimageview.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+                <patternset refid="excluded.from.compilation.bigimageview"/>
+            </fileset>
+            <fileset dir="${module.bigimageview.basedir}/gen">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+                <patternset refid="excluded.from.compilation.bigimageview"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.module.bigimageview.tests"
+            depends="register.custom.compilers,compile.module.bigimageview.production"
+            description="compile module BigImageView; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.bigimageview" description="cleanup module">
+        <delete dir="${bigimageview.output.dir}"/>
+        <delete dir="${bigimageview.testoutput.dir}"/>
+    </target>
+</project>
