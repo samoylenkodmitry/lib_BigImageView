@@ -8,3 +8,4 @@ bin/
 local.properties
 project.properties
 build.gradle
+out/
